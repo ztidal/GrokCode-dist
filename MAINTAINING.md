@@ -5,7 +5,7 @@ Division of labour, decided 2026-08-22 (this supersedes the split written here e
 | Side | Owns |
 | --- | --- |
 | **Windows** (release machine) | The source repository's release tooling; the Windows installers; **the release itself** — it creates and publishes `vX.Y.Z`; `latest.json`; `SHA256SUMS.txt`; the release notes; and both documents in this repository, `README.md` and `docs/index.html`. |
-| **Mac** | Building the macOS app from the release's source tag and uploading **only its own files** to the release that already exists: `ZtidalCode.app.tar.gz`, its `.sig`, the DMG, `latest-mac.json`, `SHA256SUMS-mac.txt`. Nothing else. |
+| **Mac** | Building the macOS app from the release's source tag and uploading **only its own files** to the release that already exists: `GrokCode.app.tar.gz`, its `.sig`, the DMG, `latest-mac.json`, `SHA256SUMS-mac.txt`. Nothing else. |
 
 ## Rules for the Mac side — each one has already been broken once
 
@@ -24,10 +24,10 @@ Division of labour, decided 2026-08-22 (this supersedes the split written here e
 ## The macOS procedure, per release
 
 1. **Wait for the release to exist and be public.**
-   `gh release view vX.Y.Z --repo ztidal/ZtidalCode-dist --json isDraft` must say `false`.
+   `gh release view vX.Y.Z --repo ztidal/GrokCode-dist --json isDraft` must say `false`.
    The Windows side creates it; you join it.
 2. **Check out exactly that source.** The Windows release tags the build commit:
-   `git fetch origin --tags && git checkout vX.Y.Z`. `branding/ztidalcode.json` must read
+   `git fetch origin --tags && git checkout vX.Y.Z`. `branding/grokcode.json` must read
    `X.Y.Z` — the feed you are about to write claims that version, so the build must be it.
 3. **Prerequisites on the Mac.** Xcode command-line tools; `rustup target add aarch64-apple-darwin
    x86_64-apple-darwin`; Node 24 and `npm ci`. Signing, in the environment and nowhere else:
@@ -40,7 +40,7 @@ Division of labour, decided 2026-08-22 (this supersedes the split written here e
    the landing page must tell users the exact hoop they will meet.
 4. **Build, through both overlays.** The second points the updater at the macOS feed:
    ```bash
-   npm run tauri -- build --config branding/ztidalcode.json --config branding/ztidalcode-mac.json \
+   npm run tauri -- build --config branding/grokcode.json --config branding/grokcode-mac.json \
      --target universal-apple-darwin
    ```
 5. **Write the feed.** Use the same notes the Windows release shipped with
@@ -55,11 +55,11 @@ Division of labour, decided 2026-08-22 (this supersedes the split written here e
 6. **Upload your five files to the existing release.**
    ```bash
    B=src-tauri/target/universal-apple-darwin/release/bundle
-   gh release upload vX.Y.Z --repo ztidal/ZtidalCode-dist latest-mac.json SHA256SUMS-mac.txt \
-     $B/macos/ZtidalCode.app.tar.gz $B/macos/ZtidalCode.app.tar.gz.sig $B/dmg/ZtidalCode_X.Y.Z_universal.dmg
+   gh release upload vX.Y.Z --repo ztidal/GrokCode-dist latest-mac.json SHA256SUMS-mac.txt \
+     $B/macos/GrokCode.app.tar.gz $B/macos/GrokCode.app.tar.gz.sig $B/dmg/GrokCode_X.Y.Z_universal.dmg
    ```
 7. **Verify from outside:**
-   `curl -sL https://github.com/ztidal/ZtidalCode-dist/releases/latest/download/latest-mac.json`
+   `curl -sL https://github.com/ztidal/GrokCode-dist/releases/latest/download/latest-mac.json`
    must show `X.Y.Z` with `darwin-aarch64` and `darwin-x86_64`.
 8. **Tell the Windows side it is up.** The landing page finds the DMG on its own (everything
    macOS there is gated on the asset existing); the guide and the release notes are the Windows

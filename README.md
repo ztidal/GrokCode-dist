@@ -1,14 +1,14 @@
-# ZtidalCode
+# GrokCode
 
 A desktop workspace for xAI's [Grok Build](https://x.ai/cli) coding agent: run several tasks side by
 side, follow each one in a live timeline, and see where your credits go. `grok` stays in charge —
-ZtidalCode drives it over [ACP](https://spec.acp.dev) and runs no agent loop of its own.
+GrokCode drives it over [ACP](https://spec.acp.dev) and runs no agent loop of its own.
 
-**[ztidal.github.io/ZtidalCode-dist](https://ztidal.github.io/ZtidalCode-dist/)** — what it looks like
+**[ztidal.github.io/GrokCode-dist](https://ztidal.github.io/GrokCode-dist/)** — what it looks like
 and what it does, in one page. Send that to someone before this one.
 
 This repository holds the installers and the update feed. The source is
-[ztidal/ZtidalCode](https://github.com/ztidal/ZtidalCode) — Apache-2.0, a hardened fork of
+[ztidal/GrokCode](https://github.com/ztidal/GrokCode) — Apache-2.0, a hardened fork of
 [PinkCode](https://github.com/3xian/PinkCode). The two are kept apart because a release is something
 you publish, not a branch you push, and the in-app updater reads this repository anonymously.
 
@@ -16,7 +16,7 @@ you publish, not a branch you push, and the in-app updater reads this repository
 
 ## Install
 
-**1. Grok Build.** ZtidalCode does not bundle it and never handles your credentials — it reuses the
+**1. Grok Build.** GrokCode does not bundle it and never handles your credentials — it reuses the
 session `grok login` creates. You need SuperGrok, X Premium+, or SuperGrok Heavy.
 
 Windows, in PowerShell:
@@ -30,34 +30,34 @@ curl -fsSL https://x.ai/cli/install.sh | bash
 
 Then `grok login` once.
 
-**2. ZtidalCode.** Download the build for your platform from
-[Releases](https://github.com/ztidal/ZtidalCode-dist/releases).
+**2. GrokCode.** Download the build for your platform from
+[Releases](https://github.com/ztidal/GrokCode-dist/releases).
 
-- **Windows:** `ZtidalCode_<version>_x64-setup.exe`. It installs per-user as `ZtidalCode.exe`, needs
+- **Windows:** `GrokCode_<version>_x64-setup.exe`. It installs per-user as `GrokCode.exe`, needs
   no admin, and from then on updates itself: one click, no prompt, and it relaunches when the update
-  is in. (v0.0.38 renamed the binary; a taskbar pin that still pointed at `PinkCode.exe` will not
-  follow.)
-- **macOS:** `ZtidalCode_<version>_universal.dmg`. Open it and drag ZtidalCode into Applications. One
+  is in. If **ZtidalCode** is still installed, uninstall it — this name is a new install folder,
+  not an in-place rename.
+- **macOS:** `GrokCode_<version>_universal.dmg`. Open it and drag GrokCode into Applications. One
   universal build runs on Apple Silicon and Intel; it updates itself from then on, like Windows.
   The latest release (v0.0.39) includes this DMG. The Mac files still land after the Windows half,
   so a brand-new tag can be Windows-only for a few hours; the landing page shows the macOS download
   only when the DMG is actually on the release.
 
-> There is also an `.msi` on every release. Take it only if you are rolling ZtidalCode out for other
+> There is also an `.msi` on every release. Take it only if you are rolling GrokCode out for other
 > people — it installs per-machine, so it needs an administrator to install **and again for every
 > update**. The `.exe` never asks.
 
 > **Windows:** our installers are **not** Authenticode-signed, so SmartScreen will warn about an
 > unknown publisher. Check your download against `SHA256SUMS.txt` on the release first:
 > ```powershell
-> Get-FileHash .\ZtidalCode_*_x64-setup.exe -Algorithm SHA256
+> Get-FileHash .\GrokCode_*_x64-setup.exe -Algorithm SHA256
 > ```
 > **macOS:** the build is ad-hoc signed — not Apple Developer ID signed, not notarized — so Gatekeeper
 > refuses the first double-click. On macOS 14, right-click the app, choose **Open**, confirm. On
 > macOS 15, after the refusal go to **System Settings → Privacy & Security → Open Anyway** and confirm
 > once. Check the download against `SHA256SUMS-mac.txt` first:
 > ```bash
-> shasum -a 256 ZtidalCode_*_universal.dmg
+> shasum -a 256 GrokCode_*_universal.dmg
 > ```
 > In-app updates on both platforms carry a minisign signature and are verified against a key compiled
 > into the build, so an update cannot be substituted even though these assets are public.
@@ -99,7 +99,7 @@ Change it for every task on a machine, no rebuild needed:
 setx PINKCODE_DEFAULT_PERMISSION_MODE ask
 ```
 
-or put `{"defaultPermissionMode":"default"}` in `%USERPROFILE%\.ztidalcode\config.json`.
+or put `{"defaultPermissionMode":"default"}` in `%USERPROFILE%\.grokcode\config.json`.
 
 Approving a **plan** and answering a question the agent asks you are always prompts, in every mode.
 
@@ -126,7 +126,7 @@ further back.
   thumbnail for pictures, the extension for everything else. Nothing is copied anywhere: the agent is
   pointed at the file where it already lives, whatever drive that is on.
 - **A screenshot.** Win+Shift+S, then paste. This is the one case with no file behind it, so it is
-  written to `%USERPROFILE%\.ztidalcode\pasted\` — never into your project.
+  written to `%USERPROFILE%\.grokcode\pasted\` — never into your project.
 - **Text** is untouched.
 
 The **×** on a chip's corner removes it. Paths join the message only when you send, so removing a chip
@@ -198,7 +198,7 @@ In the title bar:
 
 ### Slash commands
 
-Type `/` in the composer. Some are answered by ZtidalCode, the rest by `grok`.
+Type `/` in the composer. Some are answered by GrokCode, the rest by `grok`.
 
 `/usage` `/context` `/session-info` `/help` `/copy` · `/new` `/compact` `/fork` `/rewind` `/undo`
 `/export` `/model` `/effort` `/plan` `/auto` `/always-approve`
@@ -219,9 +219,9 @@ Type `/` in the composer. Some are answered by ZtidalCode, the rest by `grok`.
 
 | | |
 | --- | --- |
-| `%USERPROFILE%\.grok` · `~/.grok` | Grok Build's own sessions and credentials. ZtidalCode reads these; it does not own them. |
-| `%USERPROFILE%\.ztidalcode` · `~/.ztidalcode` | Per-task permission modes, the names you give sessions, pins and the archive, pasted screenshots, logs, and the usage cache. Separate from upstream PinkCode's `.pinkcode`, so both can be installed side by side. |
-| Browser storage | Theme, rail widths, which projects are open. Per-machine, and safe to lose — anything you would mind losing (names, pins, the archive) lives in `.ztidalcode` instead. Existing pins migrate there on first launch of 0.0.35. |
+| `%USERPROFILE%\.grok` · `~/.grok` | Grok Build's own sessions and credentials. GrokCode reads these; it does not own them. |
+| `%USERPROFILE%\.grokcode` · `~/.grokcode` | Per-task permission modes, the names you give sessions, pins and the archive, pasted screenshots, logs, and the usage cache. If `~/.ztidalcode` already exists from the previous name, GrokCode keeps using it. Separate from upstream PinkCode's `.pinkcode`. |
+| Browser storage | Theme, rail widths, which projects are open. Per-machine, and safe to lose — anything you would mind losing (names, pins, the archive) lives in `.grokcode` instead. Existing pins migrate there on first launch of 0.0.35. |
 
 ---
 
@@ -229,8 +229,8 @@ Type `/` in the composer. Some are answered by ZtidalCode, the rest by `grok`.
 
 | Asset | What it is |
 | --- | --- |
-| `ZtidalCode_<version>_x64-setup.exe` | NSIS installer, per-user, no admin — take this one |
-| `ZtidalCode_<version>_x64_en-US.msi` | MSI for deployment tooling; per-machine, admin on every update |
+| `GrokCode_<version>_x64-setup.exe` | NSIS installer, per-user, no admin — take this one |
+| `GrokCode_<version>_x64_en-US.msi` | MSI for deployment tooling; per-machine, admin on every update |
 | `*.sig` | minisign signature for the matching artifact |
 | `latest.json` | Updater manifest — the app reads this from the *latest* release |
 | `SHA256SUMS.txt` | Hashes for manual verification |
@@ -241,14 +241,14 @@ Versions are our own line and deliberately do not track upstream's.
 
 ## Acknowledgements
 
-ZtidalCode is a fork of **[PinkCode](https://github.com/3xian/PinkCode)** by
+GrokCode is a fork of **[PinkCode](https://github.com/3xian/PinkCode)** by
 [3xian](https://github.com/3xian), released under the Apache License 2.0. The workspace you are
 using — the task rail, the timeline, the Files and Git panels, the ACP client that drives `grok` —
 is PinkCode's work. This fork hardens it for use inside a team on Windows: permission handling,
 signed updates, and the handful of things Windows does differently. It keeps the relationship to
 upstream deliberately thin, so that PinkCode's improvements keep flowing in.
 
-If ZtidalCode is useful to you, the first thanks belongs upstream.
+If GrokCode is useful to you, the first thanks belongs upstream.
 
 A copy of the licence is in this repository as [`LICENSE`](LICENSE). The copyright on the original
 work is 3xian's; the changes in this fork are © 2026 ztidal, under the same licence.
